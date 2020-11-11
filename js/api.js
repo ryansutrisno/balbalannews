@@ -1,205 +1,10 @@
-//const base_url = "https://api.football-data.org/v2/";
-
-// function status(response) {
-//   if (response.status !== 200) {
-//     console.log("Error : " + response.status);
-//     return Promise.reject(new Error(response.statusText));
-//   } else {
-//     return Promise.resolve(response);
-//   }
-// }
-
-// function json(response) {
-//   return response.json();
-// }
-
-// function error(error) {
-//   console.log("Error : " + error);
-// }
-
-// function getMatches() {
-//   if ("caches" in window) {
-//     caches.match(base_url + "matches").then(function (response) {
-//       if (response) {
-//         response.json().then(function (data) {
-//           let articlesHTML = "";
-//           data.result.forEach(function (article) {
-//             articlesHTML += `
-//                   <div class="card">
-//                     <a href="./article.html?id=${article.id}">
-//                       <div class="card-image waves-effect waves-block waves-light">
-//                         <img src="${article.thumbnail}" />
-//                       </div>
-//                     </a>
-//                     <div class="card-content">
-//                       <span class="card-title truncate">${article.title}</span>
-//                       <p>${article.description}</p>
-//                     </div>
-//                   </div>
-//                 `;
-//           });
-//           // Sisipkan komponen card ke dalam elemen dengan id #content
-//           document.getElementById("articles").innerHTML = articlesHTML;
-//         });
-//       }
-//     });
-//   }
-
-//   fetch(base_url + "articles")
-//     .then(status)
-//     .then(json)
-//     .then(function (data) {
-//       // Objek/array JavaScript dari response.json() masuk lewat data.
-//       // Menyusun komponen card artikel secara dinamis
-//       let articlesHTML = "";
-//       data.result.forEach(function (article) {
-//         articlesHTML += `
-//               <div class="card">
-//                 <a href="./article.html?id=${article.id}">
-//                   <div class="card-image waves-effect waves-block waves-light">
-//                     <img src="${article.thumbnail}" />
-//                   </div>
-//                 </a>
-//                 <div class="card-content">
-//                   <span class="card-title truncate">${article.title}</span>
-//                   <p>${article.description}</p>
-//                 </div>
-//               </div>
-//             `;
-//       });
-//       // Sisipkan komponen card ke dalam elemen dengan id #content
-//       document.getElementById("articles").innerHTML = articlesHTML;
-//     })
-//     .catch(error);
-// }
-
-// function getArticleById() {
-//   return new Promise(function (resolve, reject) {
-//     // Ambil nilai query parameter (?id=)
-//     let urlParams = new URLSearchParams(window.location.search);
-//     let idParam = urlParams.get("id");
-
-//     if ("caches" in window) {
-//       caches.match(base_url + "article/" + idParam).then(function (response) {
-//         if (response) {
-//           response.json().then(function (data) {
-//             console.log(data);
-//             // Menyusun komponen card artikel secara dinamis
-//             let articleHTML = `
-//                   <div class="card">
-//                     <div class="card-image waves-effect waves-block waves-light">
-//                       <img src="${data.result.cover}" />
-//                     </div>
-//                     <div class="card-content">
-//                       <span class="card-title">${data.result.post_title}</span>
-//                       ${snarkdown(data.result.post_content)}
-//                     </div>
-//                   </div>
-//                 `;
-
-//             document.getElementById("body-content").innerHTML = articleHTML;
-//             // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
-//             resolve(data);
-//           });
-//         }
-//       });
-//     }
-
-//     fetch(base_url + "article/" + idParam)
-//       .then(status)
-//       .then(json)
-//       .then(function (data) {
-//         console.log(data);
-//         // Menyusun komponen card artikel secara dinamis
-//         let articleHTML = `
-//               <div class="card">
-//                 <div class="card-image waves-effect waves-block waves-light">
-//                   <img src="${data.result.cover}" />
-//                 </div>
-//                 <div class="card-content">
-//                   <span class="card-title">${data.result.post_title}</span>
-//                   ${snarkdown(data.result.post_content)}
-//                 </div>
-//               </div>
-//             `;
-
-//         document.getElementById("body-content").innerHTML = articleHTML;
-//         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
-//         resolve(data);
-//       });
-//   });
-// }
-
-// function getSavedArticles() {
-//   getAll().then(function (articles) {
-//     console.log(articles);
-//     // Menyusun komponen card artikel secara dinamis
-//     let articlesHTML = "";
-//     articles.forEach(function (article) {
-//       let description = article.post_content.substring(0, 100);
-//       articlesHTML += `
-//                   <div class="card">
-//                     <a href="./article.html?id=${article.ID}&saved=true">
-//                       <div class="card-image waves-effect waves-block waves-light">
-//                         <img src="${article.cover}" />
-//                       </div>
-//                     </a>
-//                     <div class="card-content">
-//                       <span class="card-title truncate">${article.post_title}</span>
-//                       <p>${description}</p>
-//                     </div>
-//                   </div>
-//                 `;
-//     });
-//     // Sisipkan komponen card ke dalam elemen dengan id #body-content
-//     document.getElementById("body-content").innerHTML = articlesHTML;
-//   });
-// }
-
-// function getSavedArticleById() {
-//   let urlParams = new URLSearchParams(window.location.search);
-//   let idParam = urlParams.get("id");
-
-//   getById(idParam).then(function (article) {
-//     articleHTML = "";
-//     let articleHTML = `
-//     <div class="card">
-//       <div class="card-image waves-effect waves-block waves-light">
-//         <img src="${article.cover}" />
-//       </div>
-//       <div class="card-content">
-//         <span class="card-title">${article.post_title}</span>
-//         ${snarkdown(article.post_content)}
-//       </div>
-//     </div>
-//   `;
-//     // Sisipkan komponen card ke dalam elemen dengan id #content
-//     document.getElementById("body-content").innerHTML = articleHTML;
-//   });
-// }
-
-// function getById(id) {
-//   return new Promise(function (resolve, reject) {
-//     dbPromised
-//       .then(function (db) {
-//         let tx = db.transaction("articles", "readonly");
-//         let store = tx.objectStore("articles");
-//         return store.get(id);
-//       })
-//       .then(function (article) {
-//         resolve(article);
-//       });
-//   });
-// }
-
 const API_KEY = "e0eb16d8741f4d4e8a6e0d677d73ba28";
 const BASE_URL = "https://api.football-data.org/v2/";
 
 const LEAGUE_ID = 2021;
-const TEAM_ID = 61;
 
-const ENDPOINT_COMPETITION = `${BASE_URL}competitions/${LEAGUE_ID}/standings`;
-const ENDPOINT_SCHEDULED_TEAM =`${BASE_URL}teams/${TEAM_ID}/matches?status=SCHEDULED`;
+const ENDPOINT_STANDINGS = `${BASE_URL}competitions/${LEAGUE_ID}/standings`;
+const ENDPOINT_TEAMS_ID =`${BASE_URL}/teams`;
 const ENDPOINT_TEAMS = `${BASE_URL}competitions/${LEAGUE_ID}/teams`;
 
 const fetchAPI = (url) => {
@@ -223,16 +28,15 @@ const fetchAPI = (url) => {
     });
 };
 
-// loader
-let loader;
-function showLoader() {
-  loader = setTimeout(showStanding, 5000);
-  loader = setTimeout(showSchedule, 5000);
+// loader standing
+let standingLoader;
+function showStandingLoader() {
+  standingLoader = setTimeout(showStanding, 5000);
 }
 
-function getAllStandings() {
+function getStanding() {
   if ("caches" in window) {
-    caches.match(ENDPOINT_COMPETITION).then(function (response) {
+    caches.match(ENDPOINT_STANDINGS).then(function (response) {
       if (response) {
         response.json().then(function (data) {
           console.log("Competition Data: " + data);
@@ -242,7 +46,7 @@ function getAllStandings() {
     });
   }
 
-  fetchAPI(ENDPOINT_COMPETITION)
+  fetchAPI(ENDPOINT_STANDINGS)
     .then((data) => {
       showStanding(data);
     })
@@ -252,10 +56,10 @@ function getAllStandings() {
 }
 
 function showStanding(data) {
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("homeStanding").style.display = "block";
+  document.getElementById("standingLoader").style.display = "none";
+  document.getElementById("standing").style.display = "block";
   let standings = "";
-  let standingElement = document.getElementById("homeStanding");
+  let standingElement = document.getElementById("standing");
 
   data.standings[0].table.forEach(function (standing) {
     standings += `
@@ -300,7 +104,7 @@ function showStanding(data) {
                             <th class="pink-text center-align">GD</th>
                         </tr>
                      </thead>
-                    <tbody onload="showLoader()" style="margin:0;" id="standings">
+                    <tbody onload="showStandingLoader()" style="margin:0;" id="standings">
                         ${standings}
                     </tbody>
                 </table>
@@ -308,143 +112,156 @@ function showStanding(data) {
     `;
 }
 
-function getAllSchedules() {
+let teamLoader;
+function showTeamLoader() {
+  teamLoader = setTimeout(showTeam, 5000);
+}
+
+function getTeam() {
   if ("caches" in window) {
-    caches.match(ENDPOINT_SCHEDULED_TEAM).then(function (response) {
+    caches.match(ENDPOINT_TEAMS).then(function (response) {
       if (response) {
         response.json().then(function (data) {
-          console.log("Schedule Data: " + data);
-          showSchedule(data);
+          console.log("Team Data: " + data);
+          showTeam(data);
         });
       }
     });
   }
 
-  fetchAPI(ENDPOINT_SCHEDULED_TEAM)
+  fetchAPI(ENDPOINT_TEAMS)
     .then((data) => {
-      showSchedule(data);
+      showTeam(data);
     })
     .catch((error) => {
       console.log(error);
     });
 }
 
-function showSchedule(data) {
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("homeSchedule").style.display = "block";
-  let schedules = "";
-  let scheduleElement = document.getElementById("homeSchedule");
+function showTeam(data) {
+  document.getElementById("teamLoader").style.display = "none";
+  document.getElementById("teams").style.display = "block";
+  let teamsElement = "";
 
-  data.schedules.matches[0].forEach(function (schedule) {
-    schedules += `
-                <tr>
-                    <td class="left-align">${schedule.utcDate}</td>
-                    <td class="green-text text-darken-4 center-align">${
-                      schedule.stage
-                    }</td>
-                    <td class="blue-text center-align">${schedule.group}</td>
-                    <td class="red-text center-align">${schedule.matchday}</td>
-                    <td class="brown-text center-align">${schedule.homeTeam.name}</td>
-                    <td>vs</td>
-                    <td class="purple-text center-align">${
-                      schedule.awayTeam.name
-                    }</td>
-                    <td class="grey-text center-align">${
-                      schedule.competition.name
-                    }</td>
-                    <td class="pink-text center-align">${
-                      schedule.competition.area.name
-                    }</td>
-                </tr>
-        `;
+  data.teams.forEach(function (team) {
+    teamsElement += `
+                  <div class="col mb-4">
+                      <div class="card-deck">
+                        <div class="card text-center" style="width: 18rem;">
+                          <img src="${team.crestUrl}" class="card-img-top" style="height: 17.5rem;" alt="${team.name}">
+                          <div class="card-body">
+                            <p class="h6">${team.name}</p>
+                            <a href="./team.html?id=${team.ID}">More Info</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    `;
   });
-
-  scheduleElement.innerHTML = `
-              <div class="card" style="padding-left: 24px; padding-right: 24px; margin-top: 30px; border-radius: 7px;">
-                <table class="striped responsive-table">
-                    <thead>
-                        <tr>
-                            <th>Time Match</th>
-                            <th class="green-text center-align">Stage</th>
-                            <th class="blue-text center-align">Group</th>
-                            <th class="red-text center-align">Matchday</th>
-                            <th class="brown-text center-align">Home</th>
-                            <th class="purple-text center-align"></th>
-                            <th class="grey-text center-align">Away</th>
-                            <th class="pink-text center-align">Competition Name</th>
-                            <th class="pink-text center-align">Area</th>
-                        </tr>
-                     </thead>
-                    <tbody style="margin:0;" id="standings">
-                        ${schedules}
-                    </tbody>
-                </table>
-              </div>
-    `;
+  document.getElementById("teams").innerHTML = teamsElement;
 }
 
+function getTeamById() {
+  return new Promise(function (resolve, reject) {
+    // Ambil nilai query parameter (?id=)
+    let urlParams = new URLSearchParams(window.location.search);
+    let idParam = urlParams.get("id");
 
+    if ("caches" in window) {
+      caches.match(BASE_URL + "teams/" + idParam).then(function (response) {
+        if (response) {
+          response.json().then(function (data) {
+            console.log(data);
+            // Menyusun komponen card artikel secara dinamis
+            let teamHTML = `
+                  <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                      <img src="${data.teams.crestUrl}" />
+                    </div>
+                    <div class="card-content">
+                      <span class="card-title">${data.teams.name}</span>
+                      ${snarkdown(data.teams.address)}
+                    </div>
+                  </div>
+                `;
 
-// function getAllTeams() {
-//   if ("caches" in window) {
-//     caches.match(ENDPOINT_TEAMS).then(function (response) {
-//       if (response) {
-//         response.json().then(function (data) {
-//           console.log("Team Data: " + data);
-//           showTeam(data);
-//         });
-//       }
-//     });
-//   }
+            document.getElementById("body-content").innerHTML = teamHTML;
+            // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
+            resolve(data);
+          });
+        }
+      });
+    }
 
-//   fetchAPI(ENDPOINT_TEAMS)
-//     .then((data) => {
-//       showTeam(data);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// }
+    fetchAPI(BASE_URL + "teams/" + idParam)
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        console.log(data);
+        // Menyusun komponen card artikel secara dinamis
+        let teamHTML = `
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img src="${data.teams.crestUrl}" />
+                </div>
+                <div class="card-content">
+                  <span class="card-title">${data.teams.name}</span>
+                  ${snarkdown(data.teams.address)}
+                </div>
+              </div>
+            `;
 
-// function showTeam(data) {
-//   let teams = "";
-//   let teamElement = document.getElementById("showTeams");
-//   // const teams = document.getElementById("showTeams");
-//   // const teamElement = document.getElementById("showTeams");
-//   // teams.innerHTML = "";
-//   data.teams.forEach(function (team) {
-//   // teams += `
-//   //   <div class="col sm-6">
-//   //     <div class="card">
-//   //       <img src="${team.crestUrl}" class="card-img-top" width="60px" height="60px" alt="${team.name}">
-//   //       <div class="card-body">
-//   //         <h5 class="card-title">${team.name}</h5>
-//   //           <ul class="list-group list-group-flush">
-//   //             <li class="list-group-item text-wrap">Address : ${team.address}</li>
-//   //             <li class="list-group-item text-wrap">Website : ${team.website}</li>
-//   //           </ul>
-//   //       </div>
-//   //     </div>
-//   //   </div>`;
-//   // });
-//   // teamElement.innerHTML = `
-//   //   <div class="row" id="teams">
-//   //     ${teams}
-//   //   </div>`;
+        document.getElementById("body-content").innerHTML = teamHTML;
+        // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
+        resolve(data);
+      });
+  });
+}
 
-//     teamElement.innerHTML = `
-//         <div class="col sm-6">
-//         <div class="card">
-//           <img src="${team.crestUrl}" class="card-img-top" width="60px" height="60px" alt="${team.name}">
-//           <div class="card-body">
-//             <h5 class="card-title">${team.name}</h5>
-//               <ul class="list-group list-group-flush">
-//                 <li class="list-group-item text-wrap">Address : ${team.address}</li>
-//                 <li class="list-group-item text-wrap">Website : ${team.website}</li>
-//               </ul>
-//           </div>
-//         </div>
-//       </div>
-//     `;
-//   });
-// }
+function getSavedTeams() {
+  getAll().then(function (teams) {
+    console.log(teams);
+    // Menyusun komponen card artikel secara dinamis
+    let articlesHTML = "";
+    teams.forEach(function (team) {
+      let description = team.address.substring(0, 100);
+      teamsHTML += `
+                  <div class="card">
+                    <a href="./team.html?id=${team.ID}&saved=true">
+                      <div class="card-image waves-effect waves-block waves-light">
+                        <img src="${team.crestUrl}" />
+                      </div>
+                    </a>
+                    <div class="card-content">
+                      <span class="card-title truncate">${team.name}</span>
+                      <p>${description}</p>
+                    </div>
+                  </div>
+                `;
+    });
+    // Sisipkan komponen card ke dalam elemen dengan id #body-content
+    document.getElementById("body-content").innerHTML = teamsHTML;
+  });
+}
+
+function getSavedTeamById() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let idParam = urlParams.get("id");
+
+  getById(idParam).then(function (team) {
+    teamHTML = "";
+    let teamHTML = `
+    <div class="card">
+      <div class="card-image waves-effect waves-block waves-light">
+        <img src="${team.crestUrl}" />
+      </div>
+      <div class="card-content">
+        <span class="card-title">${team.name}</span>
+        ${snarkdown(team.address)}
+      </div>
+    </div>
+  `;
+    // Sisipkan komponen card ke dalam elemen dengan id #content
+    document.getElementById("body-content").innerHTML = teamHTML;
+  });
+}
