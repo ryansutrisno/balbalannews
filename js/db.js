@@ -1,19 +1,22 @@
 const dbPromised = idb.open("balnews", 1, function (upgradeDb) {
-  const articlesObjectStore = upgradeDb.createObjectStore("teams", {
+  console.log('upgradeDb =>', upgradeDb)
+  const teamsObjectStore = upgradeDb.createObjectStore("teams", {
     keyPath: "ID",
   });
-  articlesObjectStore.createIndex("name", "name", {
+  console.log('team object store =>', teamsObjectStore)
+  teamsObjectStore.createIndex("name", "name", {
     unique: false,
   });
 });
 
 function saveForLater(team) {
+  console.log('teams =>', team)
   dbPromised
     .then(function (db) {
       let tx = db.transaction("teams", "readwrite");
       let store = tx.objectStore("teams");
-      console.log(team);
-      store.put(team.result);
+      console.log('save team by id =>',team);
+      store.add(team.result);
       return tx.complete;
     })
     .then(function () {

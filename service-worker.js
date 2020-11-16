@@ -5,8 +5,6 @@ let urlsToCache = [
   "/index.html",
   "/team.html",
   "/pages/home.html",
-  "/pages/about.html",
-  "/pages/contact.html",
   "/pages/standing.html",
   "/pages/saved.html",
   "/assets/icon/icon.png",
@@ -16,10 +14,12 @@ let urlsToCache = [
   "/css/styles.css",
   "/js/materialize.min.js",
   "/js/bootstrap.min.js",
+  "/js/script.js",
   "/js/nav.js",
   "/js/api.js",
   "/js/db.js",
   "/js/idb.js",
+  "/push.js",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
 ];
@@ -64,5 +64,26 @@ self.addEventListener("activate", function (event) {
         })
       );
     })
+  );
+});
+
+self.addEventListener("push", function(event) {
+  let body;
+  if (event.data) {
+    body = event.data.text();
+  } else {
+    body = "Push message no payload";
+  }
+  let options = {
+    body: body,
+    icon: "img/notification.png",
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1,
+    },
+  };
+  event.waitUntil(
+    self.registration.showNotification("Push Notification", options)
   );
 });

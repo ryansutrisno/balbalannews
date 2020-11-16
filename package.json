@@ -1,0 +1,24 @@
+{
+  "name": "football-news",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <a href=\"http://materializecss.com/\">     <img src=\"http://materializecss.com/res/materialize.svg\" width=\"150\">   </a> </p>",
+  "main": "push.js",
+  "dependencies": {
+    "web-push": "^3.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryansutrisno/balbalannews.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryansutrisno/balbalannews/issues"
+  },
+  "homepage": "https://github.com/ryansutrisno/balbalannews#readme"
+}

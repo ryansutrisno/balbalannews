@@ -4,7 +4,6 @@ const BASE_URL = "https://api.football-data.org/v2/";
 const LEAGUE_ID = 2021;
 
 const ENDPOINT_STANDINGS = `${BASE_URL}competitions/${LEAGUE_ID}/standings`;
-const ENDPOINT_TEAMS_ID =`${BASE_URL}/teams`;
 const ENDPOINT_TEAMS = `${BASE_URL}competitions/${LEAGUE_ID}/teams`;
 
 const fetchAPI = (url) => {
@@ -31,7 +30,7 @@ const fetchAPI = (url) => {
 // loader standing
 let standingLoader;
 function showStandingLoader() {
-  standingLoader = setTimeout(showStanding, 5000);
+  standingLoader = setTimeout(showStanding, 8000);
 }
 
 function getStanding() {
@@ -114,7 +113,7 @@ function showStanding(data) {
 
 let teamLoader;
 function showTeamLoader() {
-  teamLoader = setTimeout(showTeam, 5000);
+  teamLoader = setTimeout(showTeam, 8000);
 }
 
 function getTeam() {
@@ -151,7 +150,7 @@ function showTeam(data) {
                           <img src="${team.crestUrl}" class="card-img-top" style="height: 17.5rem;" alt="${team.name}">
                           <div class="card-body">
                             <p class="h6">${team.name}</p>
-                            <a href="./team.html?id=${team.ID}">More Info</a>
+                            <a href="./team.html?id=${team.id}">More Info</a>
                           </div>
                         </div>
                       </div>
@@ -171,16 +170,23 @@ function getTeamById() {
       caches.match(BASE_URL + "teams/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            console.log(data);
+            console.log( 'team by id',data);
             // Menyusun komponen card artikel secara dinamis
             let teamHTML = `
                   <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
-                      <img src="${data.teams.crestUrl}" />
+                      <img src="${data.crestUrl}" />
                     </div>
-                    <div class="card-content">
-                      <span class="card-title">${data.teams.name}</span>
-                      ${snarkdown(data.teams.address)}
+                    <div class="card-content text-center">
+                      <span class="card-title">${data.name}</span>
+                        <ul>
+                          <li>Address: ${data.address}</li>
+                          <li>Phone: ${data.phone}</li>
+                          <li>Website: ${data.website}</li>
+                          <li>Email: ${data.email}</li>
+                          <li>Founded: ${data.founded}</li>
+                          <li>Venue: ${data.venue}</li>
+                        </ul>
                     </div>
                   </div>
                 `;
@@ -193,7 +199,7 @@ function getTeamById() {
       });
     }
 
-    fetchAPI(BASE_URL + "teams/" + idParam)
+    fetchAPI(BASE_URL + "teams/"  + idParam)
       .then(status)
       .then(json)
       .then(function (data) {
@@ -204,9 +210,16 @@ function getTeamById() {
                 <div class="card-image waves-effect waves-block waves-light">
                   <img src="${data.teams.crestUrl}" />
                 </div>
-                <div class="card-content">
+                <div class="card-content text-center">
                   <span class="card-title">${data.teams.name}</span>
-                  ${snarkdown(data.teams.address)}
+                    <ul>
+                      <li>Address: ${data.teams.address}</li>
+                      <li>Phone ${data.teams.phone}</li>
+                      <li>Website: ${data.teams.website}</li>
+                      <li>Email: ${data.teams.email}</li>
+                      <li>Founded: ${data.teams.founded}</li>
+                      <li>Venue: ${data.teams.venue}</li>
+                    </ul>
                 </div>
               </div>
             `;
@@ -220,11 +233,11 @@ function getTeamById() {
 
 function getSavedTeams() {
   getAll().then(function (teams) {
-    console.log(teams);
+    console.log('getSavedTeams =>',teams);
     // Menyusun komponen card artikel secara dinamis
-    let articlesHTML = "";
+    let teamsHTML = "";
     teams.forEach(function (team) {
-      let description = team.address.substring(0, 100);
+      console.log('team =>', team)
       teamsHTML += `
                   <div class="card">
                     <a href="./team.html?id=${team.ID}&saved=true">
@@ -232,9 +245,16 @@ function getSavedTeams() {
                         <img src="${team.crestUrl}" />
                       </div>
                     </a>
-                    <div class="card-content">
+                    <div class="card-content text-center">
                       <span class="card-title truncate">${team.name}</span>
-                      <p>${description}</p>
+                      <ul>
+                        <li>Address: ${team.address}</li>
+                        <li>Phone: ${team.phone}</li>
+                        <li>Website: ${team.website}</li>
+                        <li>Email: ${team.email}</li>
+                        <li>Founded: ${team.founded}</li>
+                        <li>Venue: ${team.venue}</li>
+                      </ul>
                     </div>
                   </div>
                 `;
@@ -255,13 +275,24 @@ function getSavedTeamById() {
       <div class="card-image waves-effect waves-block waves-light">
         <img src="${team.crestUrl}" />
       </div>
-      <div class="card-content">
+      <div class="card-content text-center">
         <span class="card-title">${team.name}</span>
-        ${snarkdown(team.address)}
+          <ul>
+              <li>Address: ${team.address}</li>
+              <li>Phone: ${team.phone}</li>
+              <li>Website: ${team.website}</li>
+              <li>Email: ${team.email}</li>
+              <li>Founded: ${team.founded}</li>
+              <li>Venue: ${team.venue}</li>
+          </ul>
       </div>
     </div>
   `;
     // Sisipkan komponen card ke dalam elemen dengan id #content
     document.getElementById("body-content").innerHTML = teamHTML;
   });
+}
+
+function json(response) {
+  return response.json();
 }
