@@ -1,5 +1,6 @@
 const API_KEY = "e0eb16d8741f4d4e8a6e0d677d73ba28";
 const BASE_URL = "https://api.football-data.org/v2/";
+// const BASE_URL = "http://localhost:4000/v2/";
 
 const LEAGUE_ID = 2021;
 
@@ -27,6 +28,9 @@ const fetchAPI = (url) => {
     });
 };
 
+// function json(res) {
+//   return res.json();
+// }
 // loader standing
 let standingLoader;
 function showStandingLoader() {
@@ -200,25 +204,23 @@ function getTeamById() {
     }
 
     fetchAPI(BASE_URL + "teams/"  + idParam)
-      .then(status)
-      .then(json)
       .then(function (data) {
         console.log(data);
         // Menyusun komponen card artikel secara dinamis
         let teamHTML = `
               <div class="card">
                 <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${data.teams.crestUrl}" />
+                  <img src="${data.crestUrl}" />
                 </div>
                 <div class="card-content text-center">
-                  <span class="card-title">${data.teams.name}</span>
+                  <span class="card-title">${data.name}</span>
                     <ul>
-                      <li>Address: ${data.teams.address}</li>
-                      <li>Phone ${data.teams.phone}</li>
-                      <li>Website: ${data.teams.website}</li>
-                      <li>Email: ${data.teams.email}</li>
-                      <li>Founded: ${data.teams.founded}</li>
-                      <li>Venue: ${data.teams.venue}</li>
+                      <li>Address: ${data.address}</li>
+                      <li>Phone ${data.phone}</li>
+                      <li>Website: ${data.website}</li>
+                      <li>Email: ${data.email}</li>
+                      <li>Founded: ${data.founded}</li>
+                      <li>Venue: ${data.venue}</li>
                     </ul>
                 </div>
               </div>
@@ -293,6 +295,4 @@ function getSavedTeamById() {
   });
 }
 
-function json(response) {
-  return response.json();
-}
+
