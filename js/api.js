@@ -1,6 +1,5 @@
 const API_KEY = "e0eb16d8741f4d4e8a6e0d677d73ba28";
 const BASE_URL = "https://api.football-data.org/v2/";
-// const BASE_URL = "http://localhost:4000/v2/";
 
 const LEAGUE_ID = 2021;
 
@@ -28,9 +27,6 @@ const fetchAPI = (url) => {
     });
 };
 
-// function json(res) {
-//   return res.json();
-// }
 // loader standing
 let standingLoader;
 function showStandingLoader() {
@@ -115,6 +111,7 @@ function showStanding(data) {
     `;
 }
 
+// loader team
 let teamLoader;
 function showTeamLoader() {
   teamLoader = setTimeout(showTeam, 8000);
@@ -148,17 +145,20 @@ function showTeam(data) {
 
   data.teams.forEach(function (team) {
     teamsElement += `
-                  <div class="col mb-4">
-                      <div class="card-deck">
-                        <div class="card text-center" style="width: 18rem;">
-                          <img src="${team.crestUrl}" class="card-img-top" style="height: 17.5rem;" alt="${team.name}">
-                          <div class="card-body">
-                            <p class="h6">${team.name}</p>
-                            <a href="./team.html?id=${team.id}">More Info</a>
+                        <div class="col mb-4">
+                          <div class="card-deck">
+                            <div class="card text-center" style="width: 18rem;">
+                              <img src="${team.crestUrl.replace(
+                                /^http:\/\//i,
+                                "https://"
+                              )}" class="card-img-top" style="height: 17.5rem;" alt="${team.name}">
+                              <div class="card-body">
+                                  <p class="h6">${team.name}</p>
+                                  <a href="./team.html?id=${team.id}">More Info</a>
+                              </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
+                          </div>
+                          </div>
                     `;
   });
   document.getElementById("teams").innerHTML = teamsElement;
@@ -178,8 +178,11 @@ function getTeamById() {
             // Menyusun komponen card artikel secara dinamis
             let teamHTML = `
                   <div class="card">
-                    <div class="card-image waves-effect waves-block waves-light">
-                      <img src="${data.crestUrl}" />
+                    <div class="card-image waves-effect waves-block waves-light" style="padding: 10px;">
+                      <img src="${data.crestUrl.replace(
+                        /^http:\/\//i,
+                        "https://"
+                      )}" />
                     </div>
                     <div class="card-content text-center">
                       <span class="card-title">${data.name}</span>
@@ -209,8 +212,11 @@ function getTeamById() {
         // Menyusun komponen card artikel secara dinamis
         let teamHTML = `
               <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${data.crestUrl}" />
+                <div class="card-image waves-effect waves-block waves-light" style="padding: 10px;">
+                  <img src="${data.crestUrl.replace(
+                    /^http:\/\//i,
+                    "https://"
+                  )}" />
                 </div>
                 <div class="card-content text-center">
                   <span class="card-title">${data.name}</span>
@@ -236,15 +242,18 @@ function getTeamById() {
 function getSavedTeams() {
   getAll().then(function (teams) {
     console.log('getSavedTeams =>',teams);
-    // Menyusun komponen card artikel secara dinamis
+    // Menyusun komponen card team secara dinamis
     let teamsHTML = "";
     teams.forEach(function (team) {
       console.log('team =>', team)
       teamsHTML += `
-                  <div class="card">
-                    <a href="./team.html?id=${team.ID}&saved=true">
+                  <div class="card" style="margin: 20px;">
+                    <a href="./team.html?id=${team.id}&saved=true">
                       <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${team.crestUrl}" />
+                        <img src="${team.crestUrl.replace(
+                          /^http:\/\//i,
+                          "https://"
+                        )}" />
                       </div>
                     </a>
                     <div class="card-content text-center">
@@ -267,32 +276,36 @@ function getSavedTeams() {
 }
 
 function getSavedTeamById() {
-  let urlParams = new URLSearchParams(window.location.search);
-  let idParam = urlParams.get("id");
-
-  getById(idParam).then(function (team) {
-    teamHTML = "";
-    let teamHTML = `
-    <div class="card">
-      <div class="card-image waves-effect waves-block waves-light">
-        <img src="${team.crestUrl}" />
-      </div>
-      <div class="card-content text-center">
-        <span class="card-title">${team.name}</span>
-          <ul>
-              <li>Address: ${team.address}</li>
-              <li>Phone: ${team.phone}</li>
-              <li>Website: ${team.website}</li>
-              <li>Email: ${team.email}</li>
-              <li>Founded: ${team.founded}</li>
-              <li>Venue: ${team.venue}</li>
-          </ul>
-      </div>
-    </div>
-  `;
-    // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = teamHTML;
-  });
+  return new Promise (function (resolve, reject) {
+    let urlParams = new URLSearchParams(window.location.search);
+    let idParam = urlParams.get("id");
+  
+    getById(idParam).then(function (teams) {
+      console.log('team by id', teams)
+      let teamHTML = "";
+      teamHTML = `
+        <div class="card" style="margin: 20px;">
+          <div class="card-image waves-effect waves-block waves-light">
+          <img src="${teams.crestUrl}" alt="${teams.name}" />
+        </div>
+          <div class="card-content text-center">
+            <span class="card-title">${teams.name}</span>
+              <ul>
+                  <li>Address: ${teams.address}</li>
+                  <li>Phone: ${teams.phone}</li>
+                  <li>Website: ${teams.website}</li>
+                  <li>Email: ${teams.email}</li>
+                  <li>Founded: ${teams.founded}</li>
+                  <li>Venue: ${teams.venue}</li>
+              </ul>
+          </div>
+        </div>
+      `;
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      document.getElementById("body-content").innerHTML = teamHTML;
+      resolve(teams);
+    });
+  })
 }
 
 

@@ -39,15 +39,16 @@ function getAll() {
 }
 
 function getById(id) {
+  console.log('id =>', id)
   return new Promise(function (resolve, reject) {
     dbPromised
       .then(function (db) {
         let tx = db.transaction("teams", "readonly");
         let store = tx.objectStore("teams");
-        return store.get(id);
+        return store.get(Number(id));
       })
-      .then(function (team) {
-        resolve(team);
+      .then(function (teams) {
+        resolve(teams);
       });
   });
 }

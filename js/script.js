@@ -28,50 +28,51 @@ if (!("serviceWorker" in navigator)) {
                   console.error("Pengguna menutup kotak dialog permintaan ijin.");
                   return;
               }
-
-              if("PushManager" in window) {
-                  navigator.serviceWorker
-                    .getRegistration()
-                    .then(function (registration) {
-                        registration.pushManager
-                            .subscribe({
-                                userVisibleOnly: true,
-                                applicationServerKey: urlBase64ToUint8Array(
-                                    "BHrDsMuF21vDB2UH9eMlWn3e6vdvcQyfdvAvPHntPkVTckoqAWFKPJ5d4z7A8pqEmXteRAy_vFopeT9LZzE5xz0"
-                                ),
-                            })
-                            .then(function (subscribe) {
-                                console.log(
-                                    "Berhasil melakukan subscribe dengan endpoint:", 
-                                    subscribe.endpoint
-                                    );
+              navigator.serviceWorker.ready.then(() => {
+                  if("PushManager" in window) {
+                      navigator.serviceWorker
+                        .getRegistration()
+                        .then(function (registration) {
+                            registration.pushManager
+                                .subscribe({
+                                    userVisibleOnly: true,
+                                    applicationServerKey: urlBase64ToUint8Array(
+                                        "BHrDsMuF21vDB2UH9eMlWn3e6vdvcQyfdvAvPHntPkVTckoqAWFKPJ5d4z7A8pqEmXteRAy_vFopeT9LZzE5xz0"
+                                    ),
+                                })
+                                .then(function (subscribe) {
                                     console.log(
-                                        "Berhasil melakukan subscribe dengan p256dh key:",
-                                        btoa(
-                                            String.fromCharCode.apply(
-                                                null,
-                                                new Uint8Array(subscribe.getKey("p256dh"))
+                                        "Berhasil melakukan subscribe dengan endpoint:", 
+                                        subscribe.endpoint
+                                        );
+                                        console.log(
+                                            "Berhasil melakukan subscribe dengan p256dh key:",
+                                            btoa(
+                                                String.fromCharCode.apply(
+                                                    null,
+                                                    new Uint8Array(subscribe.getKey("p256dh"))
+                                                )
                                             )
-                                        )
-                                    );
-                                    console.log(
-                                        "Berhasil melakukan subscribe dengan auth key:",
-                                        btoa(
-                                            String.fromCharCode.apply(
-                                                null,
-                                                new Uint8Array(subscribe.getKey("auth"))
+                                        );
+                                        console.log(
+                                            "Berhasil melakukan subscribe dengan auth key:",
+                                            btoa(
+                                                String.fromCharCode.apply(
+                                                    null,
+                                                    new Uint8Array(subscribe.getKey("auth"))
+                                                )
                                             )
-                                        )
+                                        );
+                                })
+                                .catch(function (e) {
+                                    console.error(
+                                        "Tidak dapat melakukan subscribe",
+                                        e.message
                                     );
-                            })
-                            .catch(function (e) {
-                                console.error(
-                                    "Tidak dapat melakukan subscribe",
-                                    e.message
-                                );
-                            });
-                    });
-              }
+                                });
+                        });
+                  }
+              });
           });
       }
   }

@@ -1,5 +1,6 @@
 body {
   display: flex;
+  min-width: 100%;
   min-height: 100vh;
   flex-direction: column;
 }
@@ -91,21 +92,6 @@ main {
   }
 }
 
-#homeStandings {
-  display: none;
-  text-align: center;
-}
-
-#showTeams {
-  display: none;
-  text-align: center;
-}
-
-#homeSchedule {
-  display: none;
-  text-align: center;
-}
-
 .parallax-container {
   width: 100%;
   height: 500px;
@@ -113,4 +99,16 @@ main {
 
 .page-footer {
   background-color: #00adb5;
+}
+
+div#teams {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 15px;
+  margin-right: 20px;
+}
+
+div#standing {
+  margin-left: 10px;
+  margin-right: 10px;
 }
