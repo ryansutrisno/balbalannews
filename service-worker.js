@@ -8,6 +8,10 @@ let urlsToCache = [
   "/pages/standing.html",
   "/pages/saved.html",
   "/assets/icon/icon.png",
+  "/assets/icon/favicon.ico",
+  "/assets/icon/icon-96x96.png",
+  "/assets/icon/icon-144x144.png",
+  "/assets/icon/icon-192x192.png",
   "/assets/images/pexels-tembela-bohle-1884574.jpg",
   "/css/materialize.min.css",
   "/css/bootstrap.min.css",
@@ -21,7 +25,7 @@ let urlsToCache = [
   "/js/idb.js",
   "/push.js",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
-  "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
+  "https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
 ];
 
 self.addEventListener("install", function (event) {
@@ -76,7 +80,7 @@ self.addEventListener("push", function(event) {
   }
   let options = {
     body: body,
-    icon: "img/notification.png",
+    icon: "assets/icon/icon.png",
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),

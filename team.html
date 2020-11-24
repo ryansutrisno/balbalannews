@@ -35,6 +35,11 @@
             <i class="large material-icons">save</i>
           </a>
         </div>
+        <div class="fixed-action-btn">
+          <a class="btn-floating btn-large red" id="delete">
+            <i class="large material-icons">delete</i>
+          </a>
+        </div>
     <footer class="page-footer">
       <div class="container">
         <div class="row">
@@ -76,20 +81,30 @@
         var urlParams = new URLSearchParams(window.location.search);
         var isFromSaved = urlParams.get("saved");
         var btnSave = document.getElementById("save");
+        var btnDel = document.getElementById("delete");
+
         if (isFromSaved) {
-          // Hide fab jika dimuat dari indexed db
-          btnSave.style.display = "none";
-          // ambil artikel lalu tampilkan
-          getSavedTeamById();
-        } else {
+            // Hide fab jika dimuat dari indexed db
+            btnSave.style.display = "none";
+            // ambil artikel lalu tampilkan
+            getSavedTeamById();
+          } else {
+            btnDel.style.display = "none";
           var item = getTeamById();
-        }
+        }  
         btnSave.onclick = function () {
           console.log("Tombol FAB di klik.");
           item.then(function (team) {
-            saveForLater(team);
+            saveForLater(team)
+              M.toast({html: 'Team kesayangan berhasil di simpan!', classes: 'rounded green darken-1', displayLength: 5000})
           });
         };
+        btnDel.onclick = function () {
+          console.log("Tombol DEL di klik.");
+          idTeam = ((window.location.search).split("&")[0]).replace("?id=", "");
+          deleteTeamById(idTeam)
+            M.toast({html: 'Team kesayangan berhasil di hapus!', classes: 'rounded red darken-4', displayLength: 5000})
+        }
       });
     </script>
   </body>

@@ -112,3 +112,7 @@ div#standing {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.toast {
+  width: max-content;
+}

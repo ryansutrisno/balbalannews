@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Load page content
   let page = window.location.hash.substr(1);
-  if (page == "") page = "home";
+  if (page === "") page = "home";
   loadPage(page);
 
   function loadPage(page) {
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       }
     };
-    xhttp.open("GET", "pages/" + page + ".html", true);
+    xhttp.open("GET", `pages/${page}.html`, true);
     xhttp.send();
   }
 

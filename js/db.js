@@ -16,12 +16,15 @@ function saveForLater(team) {
       let tx = db.transaction("teams", "readwrite");
       let store = tx.objectStore("teams");
       console.log('save team by id =>',team);
-      store.add(team);
+      store.put(team);
       return tx.complete;
     })
     .then(function () {
       console.log("Team kesayangan berhasil di simpan.");
-    });
+    })
+    .catch(function () {
+      console.error("Team kesayangan gagal di simpan.");
+    })
 }
 
 function getAll() {
@@ -51,4 +54,23 @@ function getById(id) {
         resolve(teams);
       });
   });
+}
+
+function deleteTeamById(id) {
+  return new Promise(function (resolve, reject) {
+    dbPromised
+    .then(function (db) {
+        let tx =  db.transaction("teams", "readwrite");
+        let store = tx.objectStore("teams");
+        store.delete(parseInt(id));
+        return tx.complete;
+      })
+      .then(function () {
+        resolve(true)
+        console.log('Team kesayangan berhasil di hapus');
+      })
+      .catch(function() {
+        console.error('Team gagal dihapus');
+      })
+  })
 }

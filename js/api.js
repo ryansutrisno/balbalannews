@@ -286,7 +286,10 @@ function getSavedTeamById() {
       teamHTML = `
         <div class="card" style="margin: 20px;">
           <div class="card-image waves-effect waves-block waves-light">
-          <img src="${teams.crestUrl}" alt="${teams.name}" />
+          <img src="${teams.crestUrl.replace(
+            /^http:\/\//i,
+            "https://"
+          )}" alt="${teams.name}" />
         </div>
           <div class="card-content text-center">
             <span class="card-title">${teams.name}</span>
@@ -307,5 +310,4 @@ function getSavedTeamById() {
     });
   })
 }
-
 
