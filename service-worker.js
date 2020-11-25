@@ -24,6 +24,10 @@ let urlsToCache = [
   "/js/db.js",
   "/js/idb.js",
   "/push.js",
+  "/manifest.json",
+  "https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js",
+  "https://code.jquery.com/jquery-3.5.1.slim.min.js",
+  "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
 ];
