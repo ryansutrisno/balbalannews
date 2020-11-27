@@ -42,7 +42,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  "/team.html",
+  "/manifest.json",
   workbox.strategies.cacheOnly()
 );
 
@@ -50,6 +50,29 @@ workbox.routing.registerRoute(
   new RegExp('/pages/'),
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'pages'
+  })
+);
+
+workbox.routing.registerRoute(
+  new RegExp('/team.html'),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'teams'
+  })
+);
+
+workbox.routing.registerRoute(
+  new RegExp("https://api.football-data.org/v2/"),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "football-api",
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 365,
+        maxEntries: 40
+      })
+    ]
   })
 );
 
