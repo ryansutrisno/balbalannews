@@ -174,7 +174,6 @@ function getTeamById() {
       caches.match(BASE_URL + "teams/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            console.log( 'team by id',data);
             // Menyusun komponen card artikel secara dinamis
             let teamHTML = `
                   <div class="card">
@@ -182,7 +181,7 @@ function getTeamById() {
                       <img src="${data.crestUrl.replace(
                         /^http:\/\//i,
                         "https://"
-                      )}" />
+                      )}" alt="${data.name}" />
                     </div>
                     <div class="card-content text-center">
                       <span class="card-title">${data.name}</span>
@@ -241,11 +240,9 @@ function getTeamById() {
 
 function getSavedTeams() {
   getAll().then(function (teams) {
-    console.log('getSavedTeams =>',teams);
     // Menyusun komponen card team secara dinamis
     let teamsHTML = "";
     teams.forEach(function (team) {
-      console.log('team =>', team)
       teamsHTML += `
                   <div class="card" style="margin: 20px;">
                     <a href="./team.html?id=${team.id}&saved=true">
@@ -281,7 +278,6 @@ function getSavedTeamById() {
     let idParam = urlParams.get("id");
   
     getById(idParam).then(function (teams) {
-      console.log('team by id', teams)
       let teamHTML = "";
       teamHTML = `
         <div class="card" style="margin: 20px;">

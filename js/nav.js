@@ -43,19 +43,19 @@ document.addEventListener("DOMContentLoaded", function() {
   function loadPage(page) {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4) {
+      if (this.readyState === 4) {
         let content = document.querySelector("#body-content");
         if (page === "home") {
           getTeam();
         } else if (page === "saved") {
           getSavedTeams();
         }
-        if (this.status == 200) {
+        if (this.status === 200) {
           content.innerHTML = xhttp.responseText;
           let parallax = document.querySelectorAll(".parallax");
           M.Parallax.init(parallax, { responsiveThreshold: 0 });
           getStanding();
-        } else if (this.status == 404) {
+        } else if (this.status === 404) {
           content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
         } else {
           content.innerHTML = "<p>Ups.. halaman tidak dapat diakses.</p>";

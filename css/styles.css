@@ -76,7 +76,7 @@ main {
     opacity: 0;
   }
   to {
-    bottom: 0px;
+    bottom: 0;
     opacity: 1;
   }
 }
